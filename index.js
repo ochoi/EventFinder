@@ -1,15 +1,12 @@
 // Modules
 var express = require('express');
 var bodyParser = require('body-parser');
-var dataUtil = require("./data-util");
-var _ = require("underscore");
 var logger = require('morgan');
 var exphbs = require('express-handlebars');
 var handlebars = exphbs.handlebars;
-var moment = require('moment');
-var marked = require('marked');
+var PORT = 3000;
+
 var app = express();
-var PORT = 8000;
 
 
 // MIDDLEWARE 
@@ -23,5 +20,11 @@ app.use('/public', express.static('public'));
 
 // Default Endpoint
 app.get("/", function(req, res) {
-    
+    res.render('home');
+});
+
+
+// Start listening on port PORT
+app.listen(PORT, function() {
+    console.log('Server listening on port:', PORT);
 });
