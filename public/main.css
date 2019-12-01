@@ -1,9 +1,10 @@
-body {
+.container {
     width: 70%;
     padding: 5px 15%;
 }
 /* Home */
 .front {
+    background-color: rgb(255, 254, 209);
     text-align: center;
     vertical-align: middle;
     line-height: 150px;
@@ -14,12 +15,19 @@ body {
 }
 
 .home {
-    text-align: center;
-    line-height: 150px;
-}
+    text-align: left;
+}   
 
+article {
+    padding: 20px 50px 20px 50px;
+    margin: 10px 0px 30px 0px;
+    background-color: rgb(255, 208, 181);
+    height: 200px;
+}
 /* About */
 .about {
+    width: 70%;
+    padding: 5px 15%;
     text-align: center;
 }
 
@@ -42,7 +50,7 @@ body {
   }
 /* Navigation */
 .nav {
-    background-color: #B7C0EE;
+    background-color: rgb(252, 255, 205);
     border-style: solid;
     border-width: 1px;
 }

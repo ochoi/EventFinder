@@ -1,4 +1,17 @@
 <div class="home">
-    {{! For each event display a button to get ticket or register people for that event}}
-    <button><a href="/register">Add a event!</a></button>
+    {{! For each event display event details and a button to get ticket/register people
+    for that event}}
+    <button class="evtbutton"><a href="/register">Click Here to Register Your Event On Our Website!</a></button>
+    
+    {{#each events}}
+    <article>
+        <h2 class="title">{{this.name}}  by  {{this.host}}</h2>
+        <hr>
+        <p>This event is being hosted in {{this.location}}.</p>
+        {{this.date}}
+        <p>People going: {{this.registered.length}}
+        <button class="evtbutton" style="float: right;"><a href="/signup">Going!</a></button>
+        </p>
+    </article>
+    {{/each}}
 </div>

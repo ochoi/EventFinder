@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 mongoose.Promise=global.Promise;
 
+// Schema 1
 var userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -11,6 +12,7 @@ var userSchema = new mongoose.Schema({
     }
 });
 
+// Schema 2
 var eventSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -25,12 +27,13 @@ var eventSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Number,
+        type: Date,
         required: true
     },
     registerd: [userSchema]
 });
 
+// Schema 3
 var ticketSchema = new mongoose.Schema({
     event: eventSchema,
     user: userSchema
