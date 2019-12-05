@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise
 var dotenv = require('dotenv');
 var handlebars = exphbs.handlebars;
+// this Event is a filename object (have to call Event.Event to refer to Event schema)
 var Event = require('./models/Event');
 
 // Use 2 new npm packages not used before
@@ -41,7 +42,7 @@ var io = require('socket.io')(http);
 
 // Default Endpoint
 app.get("/", function(req, res) {
-    Event.find({}, function(err, events) {
+    Event.Event.find({}, function(err, events) {
         if (err) throw err;
         res.render('home', {
             events: events
@@ -52,32 +53,58 @@ app.get("/", function(req, res) {
 /* At least 10 different endpoints (2 post, 2 delete) */
 
 // get a list of all the events posted
-app.get("/event/", function(req, res) {
+app.get("/api/events", function(req, res) {
     // This is in JSON format right now
-    Event.find({}, function(err, events) {
+    Event.Event.find({}, function(err, events) {
         if (err) throw err;
         res.send(events);
     });
 });
 
+// get a list of all the users
+app.get("/api/users", function(req, res) {
+    // This is in JSON format right now
+    Event.User.find({}, function(err, users) {
+        if (err) throw err;
+        res.send(users);
+    });
+});
+
+// get a list of all the tickets
+app.get("/api/tickets", function(req, res) {
+    // This is in JSON format right now
+    Event.Ticket.find({}, function(err, tickets) {
+        if (err) throw err;
+        res.send(tickets);
+    });
+});
+
 // see the list of users registered to go to the event
-app.get("/:event/users", function(req, res) {
+app.get("/registered/:event", function(req, res) {
+    Event.Event.findOne({ name: req.params.event }, function(err, event) {
+        if (err) throw err;
+        if (!event) return res.render('error');
+        
+        res.render('people', {
+            people: event.registered
+        });
+    });
 
 });
 
 // go to a link with form to create an event
-app.get("/register/", function(req, res) {
+app.get("/addEvent/", function(req, res) {
     res.render('event');
 });
 
-// alternative way to create an event
-app.post("/register/", function(req, res) {
-    var event = new Event({
+// alternative way to create an event in postman
+app.post("/addEvent/", function(req, res) {
+    var event = new Event.Event({
         name: req.body.name, 
         location: req.body.location, 
         host: req.body.host, 
         date: req.body.date, 
-        registerd: []
+        registered: []
     });
 
     event.save(function(err) {
@@ -86,11 +113,60 @@ app.post("/register/", function(req, res) {
     });  
 });
 
-// sign up as a user in the database
-app.post("/signup/", function(req, res) {
-    var user = new User({
+// register to go to that particular event as someone (input name and age)
+app.get("/registerUser/:event", function(req, res) {
+    var _event = req.params.event;
+
+    res.render('registration', {
+        _event: _event
+    });
+});
+
+// when the form in registration handlebar is submitted, the fields are sent here
+// for the particular event, we update the array of it to include the person's name and age
+app.post("/registerUser/:event/update", function(req, res) {
+    var _event = req.params.event;
+
+    Event.Event.findOne({ name: _event }, function(err, event) {
+        if (err) throw err;
+        if (!event) return res.render('error');
+        event.registered.push({
+            name: req.body.name,
+            age: parseInt(req.body.age)
+        });
+
+        var user = new Event.User({
+            name: req.body.name, 
+            age: req.body.age
+        });
+
+        var ticket = new Event.Ticket({
+            event: event,
+            user: user
+        });
+
+        event.save(function(err) {
+            if (err) res.render('error');
+            return res.render('success');
+        });
+
+        user.save(function(err) {
+            if (err) res.render('error');
+            return res.render('success');
+        });
+
+        ticket.save(function(err) {
+            if (err) res.render('error');
+            return res.render('success');
+        });
+    });
+});
+
+// works
+app.post("/registerUser/", function(req, res) {
+    var user = new Event.User({
         name: req.body.name, 
-        age: req.body.age, 
+        age: req.body.age
     });
 
     user.save(function(err) {
@@ -99,16 +175,15 @@ app.post("/signup/", function(req, res) {
     });  
 });
 
-// cancel the event
-app.delete("/cancel/:id", function(req, res) {
-    // Not working yet
-    // Event.findByIdAndRemove(req.params.id, function(err, event) {
-    //     if (err) throw err;
-    //     if (!event) {
-    //         return res.send('No event found with given ID.');
-    //     }
-    //     res.send('Event deleted!');
-    // });
+// cancel the event by name
+app.delete("/cancel/:name", function(req, res) {
+    Event.Event.findOneAndRemove({ name: req.params.name }, function(err, event) {
+        if (err) throw err;
+        if (!event) {
+            return res.render('error');
+        }
+        res.render('success');
+    });
 });
 
 // a description page about our project

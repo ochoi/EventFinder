@@ -1,0 +1,15 @@
+<h1>Get Ticket for...{{_event}}</h1>
+<div class="event">
+    <form method="POST" action="/registerUser/{{_event}}/update">
+        <div class="input-field">
+            <label>Name:</label>
+            <input type="text" name="name" size="50" placeholder="name...">
+        </div>
+        <div class="input-field">
+            <label>Age:</label>
+            <input type="text" name="age" size="50" placeholder="18...">
+        </div>
+        <br>
+        <button type="submit" class="evtbutton">Get Ticket</button>
+    </form>
+</div>

@@ -30,7 +30,7 @@ var eventSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    registerd: [userSchema]
+    registered: [userSchema]
 });
 
 // Schema 3
@@ -40,4 +40,10 @@ var ticketSchema = new mongoose.Schema({
 })
 
 var Event = mongoose.model('Event', eventSchema);
-module.exports = Event;
+var User = mongoose.model('User', userSchema);
+var Ticket = mongoose.model('Ticket', ticketSchema);
+module.exports = {
+    Event,
+    User,
+    Ticket
+}

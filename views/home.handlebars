@@ -1,7 +1,7 @@
 <div class="home">
     {{! For each event display event details and a button to get ticket/register people
     for that event}}
-    <button class="evtbutton"><a href="/register">Click Here to Register Your Event On Our Website!</a></button>
+    <button class="evtbutton"><a href="/addEvent">Click Here to Register Your Event On Our Website!</a></button>
     
     {{#each events}}
     <article>
@@ -9,8 +9,8 @@
         <hr>
         <p>This event is being hosted in {{this.location}}.</p>
         {{this.date}}
-        <p>People going: {{this.registered.length}}
-        <button class="evtbutton" style="float: right;"><a href="/signup">Going!</a></button>
+        <p><a href="/registered/{{this.name}}">People going: {{this.registered.length}}</a>
+        <button class="evtbutton" style="float: right;"><a href="/registerUser/{{this.name}}">Going!</a></button>
         </p>
     </article>
     {{/each}}

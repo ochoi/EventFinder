@@ -57,6 +57,8 @@ GET endpoint route: `/api/...`
 
 ### 4. Add New Data / API
 
+Assuming no event with the same name is allowed!
+
 HTML form route: `/addDog`
 
 POST endpoint route: `/api/addDog`
