@@ -12,7 +12,8 @@ var Event = require('./models/Event');
 
 // Use 2 new npm packages not used before
 // create at least 2 modules to separate functionality
-var PORT = 3000;
+// var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // Load envirorment variables
 dotenv.config();
