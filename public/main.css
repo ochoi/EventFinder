@@ -4,7 +4,7 @@
 }
 /* Home */
 .front {
-    background-color: rgb(255, 254, 209);
+    /*background-color: rgb(255, 254, 209);*/
     text-align: center;
     vertical-align: middle;
     line-height: 150px;
@@ -21,7 +21,7 @@
 article {
     padding: 20px 50px 20px 50px;
     margin: 10px 0px 30px 0px;
-    background-color: rgb(255, 208, 181);
+    background-color: rgb(255, 220, 199);
     height: 200px;
 }
 /* About */
@@ -36,7 +36,12 @@ article {
     display: inline-block;
     width: 100px;
 }
+.spacing {
+    float: right;
+}
+
 .evtbutton {
+    font-weight: bold;
     font-size: 14px;
     padding: 14px 40px;
     text-align: center;
@@ -44,13 +49,13 @@ article {
     border: none;
 }
 
-.evtbutton:hover {
-    background-color: #B7C0EE;
+.evtbutton:hover, .addbutton:hover {
+    background-color: rgb(227, 255, 253);
     color: white;
-  }
+}
 /* Navigation */
 .nav {
-    background-color: rgb(252, 255, 205);
+    background-color: rgb(200, 155, 252);
     border-style: solid;
     border-width: 1px;
 }

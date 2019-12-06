@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var exphbs = require('express-handlebars');
 var mongoose = require('mongoose');
+var moment = require('moment');
 mongoose.Promise = global.Promise
 var dotenv = require('dotenv');
 var handlebars = exphbs.handlebars;
@@ -46,7 +47,9 @@ app.get("/", function(req, res) {
     Event.Event.find({}, function(err, events) {
         if (err) throw err;
         res.render('home', {
-            events: events
+            events: events,
+            //formatDate: formatDate
+            //.format("ddd MMM DD YYY")
         });
     });
 });
@@ -136,24 +139,24 @@ app.post("/registerUser/:event/update", function(req, res) {
             age: parseInt(req.body.age)
         });
 
-        var user = new Event.User({
-            name: req.body.name, 
-            age: req.body.age
-        });
-
-        var ticket = new Event.Ticket({
-            event: event,
-            user: user
-        });
-
         event.save(function(err) {
             if (err) res.render('error');
             return res.render('success');
         });
 
+        var user = new Event.User({
+            name: req.body.name, 
+            age: req.body.age
+        });
+
         user.save(function(err) {
             if (err) res.render('error');
             return res.render('success');
+        });
+
+        var ticket = new Event.Ticket({
+            event: event,
+            user: user
         });
 
         ticket.save(function(err) {
