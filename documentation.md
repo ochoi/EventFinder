@@ -91,7 +91,7 @@ Delete people from event `/pop/from/:event`
  
 ## Modules
  
-Module Name: `name`
+`./modules/fakerFunction.js` Isolates faker.js logic to generate mongodb objects.
  
 ## NPM Packages
 ```
