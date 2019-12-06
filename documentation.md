@@ -91,7 +91,7 @@ request(options, function (error, response, body) {
  
 ## Modules
  
-Module Name: `name`
+`./modules/fakerFunction.js` Isolates faker.js logic to generate mongodb objects.
  
 ## NPM Packages
 ```
