@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var exphbs = require('express-handlebars');
 var faker = require('faker');
+import MicroModal from 'micromodal';
+var MicroModal = require('micromodal');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise
 var dotenv = require('dotenv');
@@ -11,9 +13,6 @@ var handlebars = exphbs.handlebars;
 // this Event is a filename object (have to call Event.Event to refer to Event schema)
 var Event = require('./models/Event');
 
-// Use 2 new npm packages not used before
-// create at least 2 modules to separate functionality
-// var PORT = 3000;
 var PORT = process.env.PORT || 3000;
 
 // Load envirorment variables
@@ -54,8 +53,6 @@ app.get("/", function(req, res) {
     });
 });
 
-/* At least 10 different endpoints (2 post, 2 delete) */
-
 // get a list of all the events posted
 app.get("/api/events", function(req, res) {
     // This is in JSON format right now
@@ -89,7 +86,7 @@ app.get("/registered/:event", function(req, res) {
         if (err) throw err;
         if (!event) return res.render('error');
         
-        res.render('people', {
+        else return res.render('people', {
             people: event.registered
         });
     });
@@ -121,7 +118,7 @@ app.post("/addEvent/", function(req, res) {
 
     event.save(function(err) {
         if (err) res.render('error');
-        return res.render('success');
+        else return res.render('success');
     });  
 });
 
@@ -147,35 +144,37 @@ app.post("/registerUser/:event/update", function(req, res) {
     Event.Event.findOne({ name: _event }, function(err, event) {
         if (err) throw err;
         if (!event) return res.render('error');
-        event.registered.push({
-            name: req.body.name,
-            age: parseInt(req.body.age)
-        });
+        else {
+            event.registered.push({
+                name: req.body.name,
+                age: parseInt(req.body.age)
+            });
 
-        event.save(function(err) {
-            if (err) error = true;
-        });
+            event.save(function(err) {
+                if (err) error = true;
+            });
 
-        var user = new Event.User({
-            name: req.body.name, 
-            age: req.body.age
-        });
+            var user = new Event.User({
+                name: req.body.name, 
+                age: req.body.age
+            });
 
-        user.save(function(err) {
-            if (err) error = true;
-        });
+            user.save(function(err) {
+                if (err) error = true;
+            });
 
-        var ticket = new Event.Ticket({
-            event: event,
-            user: user
-        });
+            var ticket = new Event.Ticket({
+                event: event,
+                user: user
+            });
 
-        ticket.save(function(err) {
-            if (err) error = true;
-        });
+            ticket.save(function(err) {
+                if (err) error = true;
+            });
 
-        if (error) return res.render('error');
-        else return res.render('success');
+            if (error) return res.render('error');
+            else return res.render('success');
+        }
     });
 });
 
@@ -199,7 +198,7 @@ app.delete("/cancel/:name", function(req, res) {
         if (!event) {
             return res.render('error');
         }
-        res.render('success');
+        else res.render('success');
     });
 });
 
