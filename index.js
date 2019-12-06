@@ -3,8 +3,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var exphbs = require('express-handlebars');
+var faker = require('faker');
 var mongoose = require('mongoose');
-var moment = require('moment');
 mongoose.Promise = global.Promise
 var dotenv = require('dotenv');
 var handlebars = exphbs.handlebars;
@@ -98,7 +98,15 @@ app.get("/registered/:event", function(req, res) {
 
 // go to a link with form to create an event
 app.get("/addEvent/", function(req, res) {
-    res.render('event');
+    var randomName = faker.name.findName();
+    var randomEventName = faker.fake("{{company.catchPhraseNoun}} {{commerce.color}}");
+    var randomLocation = faker.fake("{{address.streetAddress}}, {{address.county}} {{address.state}}, {{address.country}}");
+
+    res.render('event', {
+        randomName: randomName,
+        randomEventName, randomEventName,
+        randomLocation: randomLocation
+    });
 });
 
 // alternative way to create an event in postman
@@ -119,10 +127,14 @@ app.post("/addEvent/", function(req, res) {
 
 // register to go to that particular event as someone (input name and age)
 app.get("/registerUser/:event", function(req, res) {
+    var randomName = faker.name.findName();
+    var randomAge = faker.random.number({min:10, max:90});
     var _event = req.params.event;
 
     res.render('registration', {
-        _event: _event
+        _event: _event,
+        randomName: randomName,
+        randomAge: randomAge
     });
 });
 
@@ -130,6 +142,7 @@ app.get("/registerUser/:event", function(req, res) {
 // for the particular event, we update the array of it to include the person's name and age
 app.post("/registerUser/:event/update", function(req, res) {
     var _event = req.params.event;
+    var error = false;
 
     Event.Event.findOne({ name: _event }, function(err, event) {
         if (err) throw err;
@@ -140,8 +153,7 @@ app.post("/registerUser/:event/update", function(req, res) {
         });
 
         event.save(function(err) {
-            if (err) res.render('error');
-            return res.render('success');
+            if (err) error = true;
         });
 
         var user = new Event.User({
@@ -150,8 +162,7 @@ app.post("/registerUser/:event/update", function(req, res) {
         });
 
         user.save(function(err) {
-            if (err) res.render('error');
-            return res.render('success');
+            if (err) error = true;
         });
 
         var ticket = new Event.Ticket({
@@ -160,9 +171,11 @@ app.post("/registerUser/:event/update", function(req, res) {
         });
 
         ticket.save(function(err) {
-            if (err) res.render('error');
-            return res.render('success');
+            if (err) error = true;
         });
+
+        if (error) return res.render('error');
+        else return res.render('success');
     });
 });
 
