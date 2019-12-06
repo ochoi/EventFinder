@@ -4,14 +4,13 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var exphbs = require('express-handlebars');
 var faker = require('faker');
-import MicroModal from 'micromodal';
-var MicroModal = require('micromodal');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise
 var dotenv = require('dotenv');
 var handlebars = exphbs.handlebars;
 // this Event is a filename object (have to call Event.Event to refer to Event schema)
 var Event = require('./models/Event');
+//var eqiv = require('./eqiv.js');
 
 var PORT = process.env.PORT || 3000;
 
@@ -145,15 +144,6 @@ app.post("/registerUser/:event/update", function(req, res) {
         if (err) throw err;
         if (!event) return res.render('error');
         else {
-            event.registered.push({
-                name: req.body.name,
-                age: parseInt(req.body.age)
-            });
-
-            event.save(function(err) {
-                if (err) error = true;
-            });
-
             var user = new Event.User({
                 name: req.body.name, 
                 age: req.body.age
@@ -163,6 +153,11 @@ app.post("/registerUser/:event/update", function(req, res) {
                 if (err) error = true;
             });
 
+            event.registered.push(user);
+
+            event.save(function(err) {
+                if (err) error = true;
+            });
             var ticket = new Event.Ticket({
                 event: event,
                 user: user
@@ -200,6 +195,66 @@ app.delete("/cancel/:name", function(req, res) {
         }
         else res.render('success');
     });
+});
+
+// remove user from the event registration list *not working as intended
+app.delete("/unRSVP/:username/from/:event", function(req, res) {
+    var error = false;
+
+    Event.User.findOneAndRemove({ name: req.params.username }, function(err, user) {
+        if (err) throw err;
+        if (!user) {
+            error = true;
+        }
+        else {
+            Event.Event.findOne({ name: req.params.event }, function(err, event) {
+                if (err) throw err;
+                if (!event) {
+                    error = true;
+                }
+                else {
+                    // event.registered.pop();
+                    for( var i = 0; i < event.registered.length; i++){ 
+                        if ( eqiv.eqiv(event.registered[i], user) ) {
+                            event.registered = event.registered.splice(i, 1);
+                        }
+                    }
+
+                    event.save(function(err) {
+                        if (err) error = true;
+                    });
+                }
+            });
+        }
+    });
+
+    if (error) return res.render('error');
+    else return res.render('success');
+
+});
+
+// empty the event registration list one by one
+app.delete("/pop/from/:event", function(req, res) {
+    var error = false;
+
+    Event.Event.findOne({ name: req.params.event }, function(err, event) {
+        
+        if (err) throw err;
+        if (!event) {
+            error = true;
+        }
+        else {
+            event.registered.pop();
+
+            event.save(function(err) {
+                if (err) error = true;
+            });
+        }
+    });
+
+    if (error) return res.render('error');
+    else return res.render('success');
+
 });
 
 // a description page about our project

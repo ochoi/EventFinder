@@ -86,8 +86,8 @@ request(options, function (error, response, body) {
 ```
  
 ## Delete Data / DELETE endpoints
-#### Delete event by name
- 
+Delete event by name: `/cancel/:name`
+Delete people from event `/pop/from/:event`
  
 ## Modules
  
