@@ -3,9 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var exphbs = require('express-handlebars');
-var faker = require('faker');
-import MicroModal from 'micromodal';
-var MicroModal = require('micromodal');
+var fakerFunctions = require('./modules/fakerFunctions.js');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise
 var dotenv = require('dotenv');
@@ -95,15 +93,7 @@ app.get("/registered/:event", function(req, res) {
 
 // go to a link with form to create an event
 app.get("/addEvent/", function(req, res) {
-    var randomName = faker.name.findName();
-    var randomEventName = faker.fake("{{company.catchPhraseNoun}} {{commerce.color}}");
-    var randomLocation = faker.fake("{{address.streetAddress}}, {{address.county}} {{address.state}}, {{address.country}}");
-
-    res.render('event', {
-        randomName: randomName,
-        randomEventName, randomEventName,
-        randomLocation: randomLocation
-    });
+    res.render('event', fakerFunctions.createEventName());
 });
 
 // alternative way to create an event in postman
@@ -124,15 +114,7 @@ app.post("/addEvent/", function(req, res) {
 
 // register to go to that particular event as someone (input name and age)
 app.get("/registerUser/:event", function(req, res) {
-    var randomName = faker.name.findName();
-    var randomAge = faker.random.number({min:10, max:90});
-    var _event = req.params.event;
-
-    res.render('registration', {
-        _event: _event,
-        randomName: randomName,
-        randomAge: randomAge
-    });
+    res.render('registration', fakerFunctions.createUser(req.params.event));
 });
 
 // when the form in registration handlebar is submitted, the fields are sent here
