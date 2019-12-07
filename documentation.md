@@ -101,8 +101,8 @@ In this project, used to generate random placeholder data in the forms that can 
 ```
  
 ```
-granim.js, https://github.com/marak/Faker.js/
-Create fluid and interactive gradient animations with this small javascript library.
-In this project, used to add gradients to certain elements on the paged to improve user experience.
+cat-ascii-faces, https://github.com/melaniecebula/cat-ascii-faces
+Create cute cat emojis on the web.
+This can be used to greet/welcome user to our website :3
 ```
  
