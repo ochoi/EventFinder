@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var exphbs = require('express-handlebars');
 var fakerFunctions = require('./modules/fakerFunctions.js');
+var cats = require('cat-ascii-faces');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise
 var dotenv = require('dotenv');
@@ -62,9 +63,8 @@ app.get("/", function(req, res) {
     Event.Event.find({}, function(err, events) {
         if (err) throw err;
         res.render('home', {
-            events: events,
-            //formatDate: formatDate
-            //.format("ddd MMM DD YYY")
+            cats: cats,
+            events: events
         });
     });
 });
@@ -216,7 +216,8 @@ app.delete("/cancel/:name", function(req, res) {
     });
 });
 
-// remove user from the event registration list *not working as intended
+// remove user from the event registration list
+// *not working as intended but still can work to remove user in our database
 app.delete("/unRSVP/:username/from/:event", function(req, res) {
     var error = false;
 
@@ -232,12 +233,12 @@ app.delete("/unRSVP/:username/from/:event", function(req, res) {
                     error = true;
                 }
                 else {
-                    // event.registered.pop();
-                    for( var i = 0; i < event.registered.length; i++){ 
-                        if ( eqiv.eqiv(event.registered[i], user) ) {
-                            event.registered = event.registered.splice(i, 1);
-                        }
-                    }
+                    event.registered.pop();
+                    // for( var i = 0; i < event.registered.length; i++){ 
+                    //     if ( eqiv.eqiv(event.registered[i], user) ) {
+                    //         event.registered = event.registered.splice(i, 1);
+                    //     }
+                    // }
 
                     event.save(function(err) {
                         if (err) error = true;
