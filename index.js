@@ -79,6 +79,24 @@ app.get("/api/tickets", function(req, res) {
     });
 });
 
+// get a list of all the tickets a user has
+app.get("/api/tickets/user/:user", function(req, res) {
+	// This is in JSON format right now
+    Event.Ticket.find({"user.name": req.params.user }, function(err, tickets) {
+        if (err) throw err;
+        res.send(tickets);
+    });
+});
+
+// get a list of all the tickets an event has registered
+app.get("/api/tickets/event/:event", function(req, res) {
+	// This is in JSON format right now
+    Event.Ticket.find({"event.name": req.params.event }, function(err, tickets) {
+        if (err) throw err;
+        res.send(tickets);
+    });
+});
+
 // see the list of users registered to go to the event
 app.get("/registered/:event", function(req, res) {
     Event.Event.findOne({ name: req.params.event }, function(err, event) {
