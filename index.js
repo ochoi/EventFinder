@@ -40,6 +40,23 @@ app.use('/public', express.static('public'));
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+app.get('/chat', function(req, res) {
+    res.render('chat');
+});
+
+io.on('connection', function(socket) {
+	console.log('NEW connection');
+	
+    socket.on('chat message', function(msg) {
+        //Task 2 - Step 2: Emit new chat message to all clients currently connected
+        io.emit('chat message', msg);
+    })
+        
+    socket.on('disconnect', function() {
+        console.log('User has disconnected');
+    });
+});
+
 // Default Endpoint
 app.get("/", function(req, res) {
     Event.Event.find({}, function(err, events) {
@@ -265,6 +282,6 @@ app.get("/about/", function(req, res) {
 });
 
 // Start listening on port PORT
-app.listen(PORT, function() {
+http.listen(PORT, function() {
     console.log('Server listening on port:', PORT);
 });
