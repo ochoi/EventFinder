@@ -100,7 +100,7 @@ Delete event by name: `/cancel/:name`<br>
 Delete people from event `/pop/from/:event`<br>
  
 ## Modules
- 
+`./modules/helper.js` Helper method that reduce repetitive code about rendering success or error page
 `./modules/fakerFunction.js` Isolates faker.js logic to generate mongodb objects.
  
 ## NPM Packages

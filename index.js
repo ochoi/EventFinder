@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var exphbs = require('express-handlebars');
 var fakerFunctions = require('./modules/fakerFunctions.js');
+var helperFun = require('./modules/helper.js');
 var cats = require('cat-ascii-faces');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise
@@ -124,11 +125,10 @@ app.post("/addEvent/", function(req, res) {
         date: req.body.date, 
         registered: []
     });
-
+    
     event.save(function(err) {
-        if (err) res.render('error');
-        else return res.render('success');
-    });  
+        helperFun.workRender(err, res);
+    });
 });
 
 // register to go to that particular event as someone (input name and age)
@@ -169,8 +169,7 @@ app.post("/registerUser/:event/update", function(req, res) {
                 if (err) error = true;
             });
 
-            if (error) return res.render('error');
-            else return res.render('success');
+            helperFun.workRender(error, res);
         }
     });
 });
@@ -183,8 +182,7 @@ app.post("/registerUser/", function(req, res) {
     });
 
     user.save(function(err) {
-        if (err) res.render('error');
-        return res.render('success');
+        helperFun.workRender(err, res);
     });  
 });
 
@@ -192,10 +190,7 @@ app.post("/registerUser/", function(req, res) {
 app.delete("/cancel/:name", function(req, res) {
     Event.Event.findOneAndRemove({ name: req.params.name }, function(err, event) {
         if (err) throw err;
-        if (!event) {
-            return res.render('error');
-        }
-        else res.render('success');
+        helperFun.workRender(event, res);
     });
 });
 
@@ -230,10 +225,7 @@ app.delete("/unRSVP/:username/from/:event", function(req, res) {
             });
         }
     });
-
-    if (error) return res.render('error');
-    else return res.render('success');
-
+    helperFun.workRender(error, res);
 });
 
 // empty the event registration list one by one
@@ -255,8 +247,7 @@ app.delete("/pop/from/:event", function(req, res) {
         }
     });
 
-    if (error) return res.render('error');
-    else return res.render('success');
+    helperFun.workRender(error, res);
 
 });
 
