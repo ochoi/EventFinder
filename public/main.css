@@ -81,5 +81,6 @@ article {
 .nav a {
     color: black;
     text-decoration: none;
-    padding-left: 15%;
+    padding-left: 14%;
+    padding-right: 14%;
 }
