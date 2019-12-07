@@ -48,8 +48,8 @@ Get all events. `/api/events`<br>
 Get all users. `/api/users`<br>
 Get all tickets. `/api/tickets`<br>
 List of users going to :event. `/api/registered/:event`<br>
-List of tickets :user has reserved. `/api/tickets/:user`<br>
-Get most active event. `/api/mostActiveEvent`<br>
+List of tickets :user has reserved. `/api/tickets/user/:user`<br>
+List of tickets associated with an event `/api/tickets/event/:event`<br>
  
 ## Add New Data / POST endpoints
 #### Add user to event (and create associated ticket)
@@ -87,7 +87,8 @@ request(options, function (error, response, body) {
  
 ## Delete Data / DELETE endpoints
 #### Delete event by name
- 
+DELETE endpoint: `/cancel/:name`
+#### Delete user from 
  
 ## Modules
  
