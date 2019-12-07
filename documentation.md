@@ -39,17 +39,18 @@ ticketSchema:
 }
 ```
  
-## Live Updates
+## Live Updates / Sockets
+Chatroom: Added a realtime chatroom where users can talk about the different events they're signed up for or are interested in.
 
 ## Handlebar Pages
-about: Page with description and group member names.
-error: Generic error page.
-success: Generic success page.
-home: Structure used to display events on home page.
-event: Page with form for event registration.
-people: Page that lists users attending specific event.
-registration: Page for users to sign of for specific events using form.
-nav: Code to generate static navigation bar on all handlebars.
+about: Page with description and group member names.<br>
+error: Generic error page.<br>
+success: Generic success page.<br>
+home: Structure used to display events on home page.<br>
+event: Page with form for event registration.<br>
+people: Page that lists users attending specific event.<br>
+registration: Page for users to sign of for specific events using form.<br>
+nav: Code to generate static navigation bar on all handlebars.<br>
 
 ## View Data / GET endpoints
  
