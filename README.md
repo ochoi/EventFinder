@@ -1,4 +1,4 @@
-Project Website: https://desolate-dusk-77559.herokuapp.com/
+Project Website: https://secure-mountain-63702.herokuapp.com/
 This is a group project created by On Choi, Aidan McGovern.
 
 ### Event Finder
